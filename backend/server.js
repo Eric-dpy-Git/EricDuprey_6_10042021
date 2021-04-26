@@ -1,10 +1,13 @@
 //http node package importation
 const http = require("http");
 
-//server creation
-const server = http.createServer((req, res) => {
-  res.end("Ceci est mon super server test !");
-});
+//import application express fromm file app.js
+const app = require("./app");
 
-//server have to listen request --> env.PORT if 3000 default port not available
+//need to tell express application on wich port it run
+app.set("port", process.env.PORT || 3000);
+//server creation
+const server = http.createServer(app);
+
+//server have to listen request --> process.env.PORT if 3000 default port not available
 server.listen(process.env.PORT || 3000);
