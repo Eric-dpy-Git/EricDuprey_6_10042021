@@ -1,3 +1,5 @@
+// https://www.youtube.com/watch?v=ESpeDdFuKBE
+
 //import express with command require
 const express = require("express");
 
@@ -7,13 +9,17 @@ const bodyParser = require("body-parser");
 //import mogoose
 const mongoose = require("mongoose");
 
-//import shema
-const Thing = require("./models/Thing");
+//import sauces route
+const saucesRoutes = require("./routes/sauces");
+
+//import user route
+const userRoutes = require("./routes/user");
+/* *********************************************** end import ********************************************* */
 
 //const app wich is our application with nothings inside but call method express
 const app = express();
 
-//connect to mogodb
+/********************************************* connect to mogodb **************************************** */
 mongoose
   .connect(
     "mongodb+srv://firstCluster:Wq1AGS5zTHWGBUkX@cluster0.qw5su.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
@@ -22,7 +28,7 @@ mongoose
   .then(() => console.log("Connexion à MongoDB réussie !"))
   .catch(() => console.log("Connexion à MongoDB échouée !"));
 
-//-------------------------------------CORS
+/* *********************************************************** CORS **************************************** */
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
@@ -35,41 +41,17 @@ app.use((req, res, next) => {
   );
   next();
 });
-//----------------end-------------
+/* ******************************* end ************************** */
 
 //instead bodyParser wich is deprecated
 app.use(express.json());
+/* app.use(bodyParser.json()); */
 
 //------------------middlewares
 
-app.post("/api/auth/signup", (req, res, next) => {
-  delete req.body._id;
-  const thing = new Thing({
-    ...req.body,
-  });
-  thing
-    .save()
-    .then(() => res.status(201).json({ message: "user load !" }))
-    .catch((error) => res.status(400).json({ error }));
-});
+app.use("/api/sauces", saucesRoutes);
 
-app.put("/api/auth/signup/:id", (req, res, next) => {
-  Thing.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
-    .then(() => res.status(200).json({ message: "yess modifié !" }))
-    .catch((error) => res.status(400).json({ error }));
-});
-
-app.get("/api/auth/signup/:id", (req, res, next) => {
-  Thing.findOne({ _id: req.params.id })
-    .then((thing) => res.status(200).json(thing))
-    .catch((error) => res.status(404).json({ error }));
-});
-
-app.get("/api/auth/signup", (req, res, next) => {
-  Thing.find()
-    .then((things) => res.status(200).json(things))
-    .catch((error) => res.status(400).json({ error }));
-});
+app.use("/api/auth", userRoutes);
 
 //----------------end-------------
 
