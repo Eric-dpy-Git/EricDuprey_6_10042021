@@ -14,6 +14,9 @@ const saucesRoutes = require("./routes/sauces");
 
 //import user route
 const userRoutes = require("./routes/user");
+
+//access to file system path
+const path = require("path");
 /* *********************************************** end import ********************************************* */
 
 //const app wich is our application with nothings inside but call method express
@@ -42,6 +45,8 @@ app.use((req, res, next) => {
   next();
 });
 /* ******************************* end ************************** */
+
+app.use("/images", express.static(path.join(__dirname, "images")));
 
 //instead bodyParser wich is deprecated
 app.use(express.json());
