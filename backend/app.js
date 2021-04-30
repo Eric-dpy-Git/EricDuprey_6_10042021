@@ -1,8 +1,5 @@
 // https://www.youtube.com/watch?v=ESpeDdFuKBE
 
-//import express with command require
-const express = require("express");
-
 //import body-parser
 const bodyParser = require("body-parser");
 
@@ -17,10 +14,19 @@ const userRoutes = require("./routes/user");
 
 //access to file system path
 const path = require("path");
-/* *********************************************** end import ********************************************* */
 
-//const app wich is our application with nothings inside but call method express
+/* ******************************************* express.js *************************************** */
+//Express.js is a framework for building web applications based on Node.js.
+//It is in fact the standard framework for server development in Node.js
+
+//import express with command require, it need to be install before
+const express = require("express");
+
+//const app wich call express --> create express application
 const app = express();
+
+//export this const to use from others files (server.js actually --> server node will serve this application)
+module.exports = app;
 
 /********************************************* connect to mogodb **************************************** */
 mongoose
@@ -52,13 +58,9 @@ app.use("/images", express.static(path.join(__dirname, "images")));
 app.use(express.json());
 /* app.use(bodyParser.json()); */
 
-//------------------middlewares
+/* ***************************************** middlewares ********************************************/
+//middleware is third-party software that creates a network
+// for exchanging information between different computer applications.
 
-app.use("/api/sauces", saucesRoutes);
-
-app.use("/api/auth", userRoutes);
-
-//----------------end-------------
-
-//export this const to use from other files
-module.exports = app;
+app.use("/api/sauces", saucesRoutes); //clear syntax
+app.use("/api/auth", userRoutes); //clear syntax
