@@ -9,6 +9,7 @@ const sauceCtrl = require("../controllers/sauce");
 const auth = require("../middleware/auth");
 const multer = require("../middleware/multer-config");
 
+//routing logique here
 router.get("/", auth, multer, sauceCtrl.getAllSauce);
 router.post("/", auth, multer, sauceCtrl.createSauce);
 router.get("/:id", auth, sauceCtrl.getOneSauce);

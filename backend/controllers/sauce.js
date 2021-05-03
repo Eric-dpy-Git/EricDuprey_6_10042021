@@ -1,13 +1,14 @@
-//import sauces shema
+//import sauces shema from models (created with mongoose function --> mongoose.Schema)
 const Sauce = require("../models/sauce");
 
 const fs = require("fs");
 
-//Routing logic here
+//Business logic here
 
 //1-creation logic
 exports.createSauce = (req, res, next) => {
   const sauceObject = JSON.parse(req.body.sauce);
+  //delette mongoDb id
   delete sauceObject._id;
   const sauce = new Sauce({
     ...sauceObject,
@@ -33,6 +34,7 @@ exports.modifySauce = (req, res, next) => {
     : { ...req.body };
   Sauce.updateOne(
     { _id: req.params.id },
+    //_id = id sent in request params
     { ...sauceObject, _id: req.params.id }
   )
     .then(() => res.status(200).json({ message: "Objet modifié !" }))
@@ -41,6 +43,7 @@ exports.modifySauce = (req, res, next) => {
 //3-delete logic
 exports.deleteSauce = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id })
+    //_id = id sent in request params
     .then((sauce) => {
       const filename = sauce.imageUrl.split("/images/")[1];
       fs.unlink(`images/${filename}`, () => {
@@ -55,6 +58,7 @@ exports.deleteSauce = (req, res, next) => {
 //4-get one logic
 exports.getOneSauce = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id })
+    //_id = id sent in request params
     .then((sauce) => res.status(200).json(sauce))
     .catch((error) => res.status(404).json({ error }));
 };
