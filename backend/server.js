@@ -1,11 +1,11 @@
 //http node package importation
-const http = require("http");
+const https = require("https");
 
 //import application express from file app.js
 const app = require("./app");
 
 //server creation
-const server = http.createServer(app); //pass the application to the server
+const server = https.createServer(app); //pass the application to the server
 
 //need to tell express application on wich port it run --> process.env.PORT if 3000 default port not available
 app.set("port", process.env.PORT || 3000);

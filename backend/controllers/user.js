@@ -1,6 +1,8 @@
 //import package bcrypt (need to be instal before)
 const bcrypt = require("bcrypt");
 
+//Import jwt (need to be instal with terminal before --> npm install --save jsonwebtoken)
+//jwt allows create and verify tokens
 const jwt = require("jsonwebtoken");
 
 //import user shema
@@ -51,6 +53,7 @@ exports.login = (req, res, next) => {
             }),
           });
         })
+        //If no connection
         .catch((error) => res.status(500).json({ error }));
     })
     //If no connection

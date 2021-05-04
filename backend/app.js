@@ -1,5 +1,7 @@
 // https://www.youtube.com/watch?v=ESpeDdFuKBE
 
+//app.js manage all request send by server
+
 //import body-parser
 /* const bodyParser = require("body-parser"); */ //Express instead bodyParser wich is deprecated
 
@@ -66,12 +68,15 @@ app.use((req, res, next) => {
 });
 /* ******************************* end ************************** */
 
-//app.use --> handle all requests
-app.use("/images", express.static(path.join(__dirname, "images")));
-
 /* ***************************************** middlewares ********************************************/
-//middleware is third-party software that creates a network
-// for exchanging information between different computer applications.
+
+/* middleware is third-party software that creates a network
+for exchanging information between different computer applications.*/
+
+//app.use --> handle all requests
+
+//for all request sent to /immage file image be serve
+app.use("/images", express.static(path.join(__dirname, "images")));
 
 //app.use + endpoint targeted by the application + import from another file
 app.use("/api/sauces", saucesRoutes); //clear syntax

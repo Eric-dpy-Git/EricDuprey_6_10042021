@@ -20,5 +20,8 @@ const sauceSchema = mongoose.Schema({
   usersDisliked: { type: [String] },
 });
 
+/*Plugin for Mongoose which purifies the model fields before saving them in the MongoDB database.*/
+/* sauceSchema.plugin(sanitizerPlugin); */
+
 //export this schema
 module.exports = mongoose.model("Sauce", sauceSchema);
