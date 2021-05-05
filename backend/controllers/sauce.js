@@ -1,10 +1,10 @@
 //import sauces shema from models (created with mongoose function --> mongoose.Schema)
 const Sauce = require("../models/sauce");
 
-//import node filesystem
+//import node filesystem to manage images
 const fs = require("fs");
 
-//Business logic down here
+//work logic down here
 
 //1-creation logic
 exports.createSauce = (req, res, next) => {
@@ -18,6 +18,7 @@ exports.createSauce = (req, res, next) => {
     imageUrl: `${req.protocol}://${req.get("host")}/images/${
       req.file.filename
     }`,
+    //add special feature to like dislike
     likes: 0,
     dislikes: 0,
     usersLiked: [],
@@ -83,22 +84,17 @@ exports.getAllSauce = (req, res, next) => {
     .catch((error) => res.status(400).json({ error }));
 };
 
-//6-
+//6- special feature to like dislike
 exports.likeDislike = (req, res, next) => {
-  // Pour la route READ = Ajout/suppression d'un like / dislike à une sauce
-  // Like présent dans le body
   let like = req.body.like;
-  // On prend le userID
   let userId = req.body.userId;
-  // On prend l'id de la sauce
   let sauceId = req.params.id;
-
   if (like === 1) {
     Sauce.updateOne(
       { _id: sauceId },
       { $push: { usersLiked: userId }, $inc: { likes: +1 } }
     )
-      .then(() => res.status(200).json({ message: "j'aime ajouté !" }))
+      .then(() => res.status(200).json({ message: "likes added !" }))
       .catch((error) => res.status(400).json({ error }));
   }
   if (like === -1) {
@@ -108,7 +104,7 @@ exports.likeDislike = (req, res, next) => {
     )
       .then(() => {
         res.status(200).json({
-          message: "Dislike ajouté !",
+          message: "Dislikes added !",
         });
       })
       .catch((error) => res.status(400).json({ error }));
@@ -123,7 +119,7 @@ exports.likeDislike = (req, res, next) => {
             { _id: sauceId },
             { $pull: { usersLiked: userId }, $inc: { likes: -1 } }
           )
-            .then(() => res.status(200).json({ message: "Like remove!" }))
+            .then(() => res.status(200).json({ message: "Likes remove!" }))
             .catch((error) => res.status(400).json({ error }));
         }
         if (sauce.usersDisliked.includes(userId)) {
@@ -133,14 +129,10 @@ exports.likeDislike = (req, res, next) => {
           )
             .then(() =>
               res.status(200).json({
-                message: "Dislike remove !",
+                message: "Dislikes remove !",
               })
             )
-            .catch((error) =>
-              res.status(400).json({
-                error,
-              })
-            );
+            .catch((error) => res.status(400).json({ error }));
         }
       })
       .catch((error) => res.status(404).json({ error }));
