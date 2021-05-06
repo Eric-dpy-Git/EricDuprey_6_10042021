@@ -2,11 +2,15 @@
 
 //app.js manage all request send by server
 
-//import body-parser
-/* const bodyParser = require("body-parser"); */ //Express instead bodyParser wich is deprecated
+var helmet = require("helmet");
+app.use(helmet());
 
 //import mogoose
-const mongoose = require("mongoose");
+
+//Express instead bodyParser wich is deprecated
+
+//import body-parser
+/* const bodyParser = require("body-parser"); */ const mongoose = require("mongoose");
 
 //import sauces route
 const saucesRoutes = require("./routes/sauces");
