@@ -2,16 +2,12 @@
 
 //app.js manage all request send by server
 
-var helmet = require("helmet");
-app.use(helmet());
-
 //import mogoose
-
-//Express instead bodyParser wich is deprecated
+const mongoose = require("mongoose");
 
 //import body-parser
-/* const bodyParser = require("body-parser"); */ const mongoose = require("mongoose");
-
+//Express instead bodyParser wich is deprecated
+/* const bodyParser = require("body-parser"); */
 //import sauces route
 const saucesRoutes = require("./routes/sauces");
 
@@ -37,6 +33,11 @@ module.exports = app;
 //instead bodyParser wich is deprecated
 app.use(express.json());
 /* app.use(bodyParser.json()); */
+
+const helmet = require("helmet");
+app.use(helmet());
+
+const rateLimit = require("express-rate-limit");
 
 /********************************************* connect to mogodb **************************************** */
 mongoose
@@ -70,6 +71,12 @@ app.use((req, res, next) => {
   );
   next();
 });
+
+const limiter = rateLimit({
+  max: 100,
+  windowMs: 60 * 60 * 1000,
+  message: "Too many request from this IP, please try again in on hour",
+});
 /* ******************************* end ************************** */
 
 /* ***************************************** middlewares ********************************************/
@@ -78,6 +85,9 @@ app.use((req, res, next) => {
 for exchanging information between different computer applications.*/
 
 //app.use --> handle all requests
+
+//limiter for brute force
+app.use("/api", limiter);
 
 //for all request sent to /immage file image be serve
 app.use("/images", express.static(path.join(__dirname, "images")));
