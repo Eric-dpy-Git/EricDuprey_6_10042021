@@ -4,6 +4,8 @@ objects in code and the representation of those objects in MongoDB. */
 
 //import mongoose
 const mongoose = require("mongoose");
+//import sanitizer wich it need to be install before
+const sanitizerPlugin = require("mongoose-sanitizer-plugin");
 
 const sauceSchema = mongoose.Schema({
   //Schema is a mongoose function
@@ -21,7 +23,7 @@ const sauceSchema = mongoose.Schema({
 });
 
 /*Plugin for Mongoose which purifies the model fields before saving them in the MongoDB database.*/
-/* sauceSchema.plugin(sanitizerPlugin); */
+sauceSchema.plugin(sanitizerPlugin);
 
 //export this schema
 module.exports = mongoose.model("Sauce", sauceSchema);

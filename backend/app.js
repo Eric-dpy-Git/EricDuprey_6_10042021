@@ -40,11 +40,12 @@ app.use(helmet());
 const rateLimit = require("express-rate-limit");
 
 /********************************************* connect to mogodb **************************************** */
+require("dotenv").config();
 mongoose
-  .connect(
-    "mongodb+srv://firstCluster:Wq1AGS5zTHWGBUkX@cluster0.qw5su.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
-    { useNewUrlParser: true, useUnifiedTopology: true }
-  )
+  .connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => console.log("Connexion à MongoDB réussie !"))
   .catch(() => console.log("Connexion à MongoDB échouée !"));
 
