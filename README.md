@@ -24,7 +24,7 @@ To use the application follow the steps below :
         Listening on port 3000
         Connexion à MongoDB réussie !
 
-7 - Now with your Terminal again : go in "frontend" folder and execute the following command :
+7 - Now with a new Terminal : go in "frontend" folder and execute the following command :
 
         ng serve
 
