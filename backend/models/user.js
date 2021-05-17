@@ -11,7 +11,7 @@ const userSchema = mongoose.Schema({
   password: { type: String, required: true },
 });
 
-//inject plugin in shema
+//inject plugin in schema (only one user)
 userSchema.plugin(uniqueValidator);
 
 module.exports = mongoose.model("user", userSchema);

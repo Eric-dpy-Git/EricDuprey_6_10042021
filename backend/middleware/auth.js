@@ -11,7 +11,7 @@ module.exports = (req, res, next) => {
     //recover token in header authorization
     const token = req.headers.authorization.split(" ")[1];
     //decode token with verify function and give secret key
-    const decodedToken = jwt.verify(token, "RANDOM_TOKEN_SECRET");
+    const decodedToken = jwt.verify(token, process.env.TKN);
     //recover user id inside
     const userId = decodedToken.userId;
     //compare user id

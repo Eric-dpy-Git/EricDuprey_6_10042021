@@ -14,7 +14,7 @@ const multer = require("../middleware/multer-config");
 
 //routing logique here
 //apply auth before controlleur to protect access
-//apply multer AFTER auth
+//apply multer to generate image AFTER auth
 router.get("/", auth, multer, sauceCtrl.getAllSauce);
 router.post("/", auth, multer, sauceCtrl.createSauce);
 router.get("/:id", auth, sauceCtrl.getOneSauce);

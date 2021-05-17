@@ -3,7 +3,7 @@ const http = require("http");
 //app import to use on serve
 const app = require("./app");
 
-//the  normalizePort  function returns a valid port, whether it is provided as a number or a string
+//the  normalizePort function returns a valid port, whether it is provided as a number or a string
 const normalizePort = (val) => {
   const port = parseInt(val, 10);
 
