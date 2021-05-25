@@ -37,9 +37,10 @@ exports.signup = (req, res, next) => {
 exports.login = (req, res, next) => {
   //method findOne + object of comparison
   User.findOne({
-    /* compare anonymize mails */
+    /* compare anonymize mail */
     email: cryptoJs.SHA256(req.body.email).toString(cryptoJs.enc.Hex),
-  })
+  }) /*convert a WordArray object to other formats by explicitly calling the toString method and passing an encoder*/
+    /*  https://cryptojs.gitbook.io/docs/ */
     .then((user) => {
       if (!user) {
         return res.status(401).json({ error: "Utilisateur non trouvé !" });
