@@ -4,7 +4,9 @@ const bcrypt = require("bcrypt");
 //Import jwt (need to be instal with terminal before --> npm install --save jsonwebtoken)
 //jwt allows create and verify tokens
 const jwt = require("jsonwebtoken");
-
+//import crypto-js (need to be install before) to anonymize mail address before sent in database
+const cryptoJs = require("crypto-js");
+let hashing = cryptoJs.SHA256("Message");
 //import user shema
 const User = require("../models/user");
 
@@ -12,12 +14,14 @@ const User = require("../models/user");
 exports.signup = (req, res, next) => {
   bcrypt
     //crypt password
-    //10 salt = how many hash (it's average)
+    //10  = how many hash (it's average)
     .hash(req.body.password, 10)
     .then((hash) => {
       //create new user with Schema
       const user = new User({
-        email: req.body.email,
+        email: /* use Secure Hash Algorithm 256 in 32bit*/ cryptoJs.SHA256(
+          req.body.email
+        ),
         password: hash,
       });
       //save in DB
@@ -32,7 +36,10 @@ exports.signup = (req, res, next) => {
 //login function to connect existing users
 exports.login = (req, res, next) => {
   //method findOne + object of comparison
-  User.findOne({ email: req.body.email })
+  User.findOne({
+    /* compare anonymize mails */
+    email: cryptoJs.SHA256(req.body.email).toString(cryptoJs.enc.Hex),
+  })
     .then((user) => {
       if (!user) {
         return res.status(401).json({ error: "Utilisateur non trouvé !" });
