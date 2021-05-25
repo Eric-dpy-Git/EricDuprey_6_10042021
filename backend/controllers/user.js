@@ -6,7 +6,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 //import crypto-js (need to be install before) to anonymize mail address before sent in database
 const cryptoJs = require("crypto-js");
-let hashing = cryptoJs.SHA256("Message");
+
 //import user shema
 const User = require("../models/user");
 
