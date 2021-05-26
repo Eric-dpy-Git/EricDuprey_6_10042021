@@ -6,7 +6,9 @@ const router = express.Router();
 
 const userCtrl = require("../controllers/user");
 
-router.post("/signup", userCtrl.signup);
+const passwordValidator = require("../middleware/passwordValidator");
+
+router.post("/signup", passwordValidator, userCtrl.signup);
 router.post("/login", userCtrl.login);
 
 //reexport router
