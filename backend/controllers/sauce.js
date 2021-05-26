@@ -86,59 +86,74 @@ exports.getAllSauce = (req, res, next) => {
 
 //6- special feature to like dislike
 exports.likeDislike = (req, res, next) => {
-  let like = req.body.like;
-  let userId = req.body.userId;
-  let sauceId = req.params.id;
-  if (like === 1) {
-    Sauce.updateOne(
-      { _id: sauceId },
-      { $push: { usersLiked: userId }, $inc: { likes: +1 } }
-    )
+  let like = req.body.like; //get like
+  let userId = req.body.userId; //get user id
+  let sauceId = req.params.id; //get sauce id
+
+  Sauce.findById(req.params.id).then((sauce) => {
+    //find sauce by id
+    let allreadyLiked = sauce.usersLiked.includes(userId); //get id allready in here with includes methode
+    let allreadyDisliked = sauce.usersDisliked.includes(userId); //get id allready in here with includes methode
+    //if id allready here --> alert message
+    if (allreadyLiked && like === 1) {
+      alert("Allready done !");
+    } else if (like === 1) {
+      // else if only like
       //if like --> push user and add one
-      .then(() => res.status(200).json({ message: "likes added !" }))
-      .catch((error) => res.status(400).json({ error }));
-  }
-  if (like === -1) {
-    Sauce.updateOne(
-      { _id: sauceId },
-      { $push: { usersDisliked: userId }, $inc: { dislikes: +1 } }
-    )
-      //if dislike --> push user and add one
-      .then(() => {
-        res.status(200).json({
-          message: "Dislikes added !",
-        });
+      Sauce.updateOne(
+        { _id: sauceId },
+        { $push: { usersLiked: userId }, $inc: { likes: +1 } }
+      )
+        .then(() => res.status(200).json({ message: "likes added !" }))
+        .catch((error) => res.status(400).json({ error }));
+    }
+    //if id allready here --> alert message
+    if (allreadyDisliked && like === -1) {
+      alert("Allready done !");
+    } else if (like === -1) {
+      // else if only like
+      //if like --> push user and add one
+      Sauce.updateOne(
+        { _id: sauceId },
+        { $push: { usersDisliked: userId }, $inc: { dislikes: +1 } }
+      )
+        .then(() => {
+          res.status(200).json({
+            message: "Dislikes added !",
+          });
+        })
+        .catch((error) => res.status(400).json({ error }));
+    }
+
+    if (like === 0) {
+      Sauce.findOne({
+        _id: sauceId,
       })
-      .catch((error) => res.status(400).json({ error }));
-  }
-  if (like === 0) {
-    Sauce.findOne({
-      _id: sauceId,
-    })
-      //remove like
-      .then((sauce) => {
-        if (sauce.usersLiked.includes(userId)) {
-          Sauce.updateOne(
-            { _id: sauceId },
-            { $pull: { usersLiked: userId }, $inc: { likes: -1 } }
-          )
-            .then(() => res.status(200).json({ message: "Likes remove!" }))
-            .catch((error) => res.status(400).json({ error }));
-        }
-        //remove dislike
-        if (sauce.usersDisliked.includes(userId)) {
-          Sauce.updateOne(
-            { _id: sauceId },
-            { $pull: { usersDisliked: userId }, $inc: { dislikes: -1 } }
-          )
-            .then(() =>
-              res.status(200).json({
-                message: "Dislikes remove !",
-              })
+        //remove like
+        .then((sauce) => {
+          if (sauce.usersLiked.includes(userId)) {
+            Sauce.updateOne(
+              { _id: sauceId },
+              { $pull: { usersLiked: userId }, $inc: { likes: -1 } }
             )
-            .catch((error) => res.status(400).json({ error }));
-        }
-      })
-      .catch((error) => res.status(404).json({ error }));
-  }
+              .then(() => res.status(200).json({ message: "Likes remove!" }))
+              .catch((error) => res.status(400).json({ error }));
+          }
+          //remove dislike
+          if (sauce.usersDisliked.includes(userId)) {
+            Sauce.updateOne(
+              { _id: sauceId },
+              { $pull: { usersDisliked: userId }, $inc: { dislikes: -1 } }
+            )
+              .then(() =>
+                res.status(200).json({
+                  message: "Dislikes remove !",
+                })
+              )
+              .catch((error) => res.status(400).json({ error }));
+          }
+        })
+        .catch((error) => res.status(404).json({ error }));
+    }
+  });
 };
