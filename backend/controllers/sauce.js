@@ -96,7 +96,7 @@ exports.likeDislike = (req, res, next) => {
     let allreadyDisliked = sauce.usersDisliked.includes(userId); //get id allready in here with includes methode
     //if id allready here --> alert message
     if (allreadyLiked && like === 1) {
-      alert("Allready done !");
+      return res.status(400).json({ message: "Allready done !" });
     } else if (like === 1) {
       // else if only like
       //if like --> push user and add one
@@ -109,7 +109,7 @@ exports.likeDislike = (req, res, next) => {
     }
     //if id allready here --> alert message
     if (allreadyDisliked && like === -1) {
-      alert("Allready done !");
+      return res.status(400).json({ message: "Allready done !" });
     } else if (like === -1) {
       // else if only like
       //if like --> push user and add one
