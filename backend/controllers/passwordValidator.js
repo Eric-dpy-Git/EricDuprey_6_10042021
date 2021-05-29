@@ -1,10 +1,10 @@
+//from --> https://www.npmjs.com/package/password-validator
+
+//import model of password
 const passwordValidatorModel = require("../models/passwordValidator.js");
 
 module.exports = (req, res, next) => {
-  console.log(req.body);
-  console.log(
-    passwordValidatorModel.validate(req.body.password, { liste: true })
-  );
+  //if password does not respect the model --> return error
   if (!passwordValidatorModel.validate(req.body.password)) {
     return res.status(400).json({
       error:
