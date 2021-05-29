@@ -20,8 +20,7 @@ schema
   .not()
   .spaces() // Should not have spaces
   .has()
-  .not()
-  .symbols() // No symbols as request !!!
+  .symbols() // symbols as request !!!
   .not()
   .oneOf(["Passw0rd", "Password123"]); // Blacklist these values for example
 
