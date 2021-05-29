@@ -40,6 +40,6 @@ To use the application follow the steps below :
 
         You can create users, add, edit sauces and you'll find already two sauces for demonstration that you can like or dislike.
 
-Last commit in 17/05/2021 by Eric Duprey.
+Last commit in 29/05/2021 by Eric Duprey.
 
 Thanks !
